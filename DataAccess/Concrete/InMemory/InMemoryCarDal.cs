@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,10 @@ namespace DataAccess.Concrete.InMemory
         {
             _cars = new List<Car>()
             {
-               new Car{Id=1,BrandId=1,ColorId=1,ModelYear=2010,DailyPrice=10,Description="Audi"},
-               new Car{Id=2,BrandId=2,ColorId=2,ModelYear=2020,DailyPrice=20,Description="Bmw"},
-               new Car{Id=3,BrandId=3,ColorId=3,ModelYear=2030,DailyPrice=30,Description="Pego"},
-               new Car{Id=4,BrandId=4,ColorId=4,ModelYear=2040,DailyPrice=40,Description="Renault"}
+               new Car{Id=1,BrandId=1,ColorId=1,ModelYear=2010,DailyPrice=10,CarName="Audi"},
+               new Car{Id=2,BrandId=2,ColorId=2,ModelYear=2020,DailyPrice=20,CarName="Bmw"},
+               new Car{Id=3,BrandId=3,ColorId=3,ModelYear=2030,DailyPrice=30,CarName="Pego"},
+               new Car{Id=4,BrandId=4,ColorId=4,ModelYear=2040,DailyPrice=40,CarName="Renault"}
             };
         }
 
@@ -53,6 +54,11 @@ namespace DataAccess.Concrete.InMemory
             return _cars.Where(c=>c.Id == car.Id).ToList();
         }
 
+        public List<CarDetailDto> GetCarDetails()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Car car)
         {
             Car carUpdate = _cars.SingleOrDefault(c=>c.Id == car.Id);
@@ -60,7 +66,7 @@ namespace DataAccess.Concrete.InMemory
             carUpdate.BrandId = car.BrandId;
             carUpdate.ColorId = car.ColorId;
             carUpdate.DailyPrice = car.DailyPrice;
-            carUpdate.Description = car.Description;
+            carUpdate.CarName = car.CarName;
             carUpdate.ModelYear = car.ModelYear;
 
         }
