@@ -1,2 +1,2 @@
 # ReCapProject
-SOLİD Prensiplerine uygun,kurumsal bir mimariye göre tasarlayarak geliştirerek öğrendiğimiz proje.. 
+SOLİD Prensiplerine uygun,kurumsal bir mimariye göre tasarlayıp geliştirerek öğrendiğimiz proje.. 
