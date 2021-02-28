@@ -14,12 +14,7 @@ namespace WebAPI.Controllers
     public class CarsController : ControllerBase
     {
         ICarService _carService;
-        //IRentalService _rentalService; // multi constructur izin verilmiyor..
-
-        //public CarsController(IRentalService rentalService)
-        //{
-        //    _rentalService = rentalService;
-        //}
+       
 
         public CarsController(ICarService carService)
         {
