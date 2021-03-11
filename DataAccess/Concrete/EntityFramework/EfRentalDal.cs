@@ -45,7 +45,6 @@ namespace DataAccess.Concrete.EntityFramework
                              CustomerId = r.CustomerId,
                              Email = u.Email,
                              LastName = u.LastName,
-                             Password = u.Password,
                              CarName = c.CarName
                              
 
