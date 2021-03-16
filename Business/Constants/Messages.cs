@@ -13,7 +13,8 @@ namespace Business.Constants
         public static string CarNotBeRented = "Araba kiralamaya uygun değil";
         public static string CarRentedSuccessfull = "Araba kiralandı";
         public static string CustomerInformationListed = "Kiralanan araba bilgileri listelendi.";
-
+        public static string CarUpdated = "Araç başarıyla güncellendi!";
+        public static string CarPriceInvalid = "Araç fiyatı 0'dan büyük olmalıdır.";
         public static string CarNameAlreadyExists = "Bu isimde başka bir ürün var";
         
         public static string CarImagesListed = "Araç görselleri listelendi!";

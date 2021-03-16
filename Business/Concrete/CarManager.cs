@@ -12,6 +12,10 @@ using Business.ValidationRules.FluentValidation;
 using System.Linq;
 using Core.Utilities.Business;
 using Business.BusinessAspects.Autofac;
+using Core.CrossCuttingConcerns.Caching;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
+using Core.Aspects.Autofac.Performance;
 
 namespace Business.Concrete
 {
@@ -19,11 +23,13 @@ namespace Business.Concrete
     {
         ICarDal _carDal;
         IRentalService _rentalService;
+        ICacheManager _cacheManager;
         public CarManager(ICarDal carDal,IRentalService rentalService)
         {
             _carDal = carDal;
             _rentalService = rentalService;
         }
+        
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
@@ -39,6 +45,14 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarAdded);
         }
 
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Car car)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<Car>> GetAll()
         {
             
@@ -67,12 +81,12 @@ namespace Business.Concrete
 
         public IResult Update(Car car)
         {
-            //var result = _carDal.GetAll(c=>c.Id == car.Id).Count;
-            //if (result >=10)
-            //{
-            //    return new ErrorResult(Messages.CarCountOfCategoryError);
-            //}
-            throw new NotImplementedException();
+            if (car.DailyPrice <= 0)
+            {
+                return new ErrorResult(Messages.CarPriceInvalid);
+            }
+            _carDal.Update(car);
+            return new SuccessResult(Messages.CarUpdated);
         }
         [ValidationAspect(typeof(CarValidator))]
         private IResult CheckIfCarNameExists(string carName)
