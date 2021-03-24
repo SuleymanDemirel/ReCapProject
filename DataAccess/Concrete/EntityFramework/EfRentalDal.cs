@@ -14,7 +14,7 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfRentalDal : EfEntityRepositoryBase<Rental, CarDbContext>, IRentalDal
     {
-        public List<RentalDetailDto> GetRentalDetails()
+        public List<RentalDetailDto> GetRentalDetailDtos(Expression<Func<Rental, bool>> filter = null)
         {
             using (CarDbContext context = new CarDbContext())
             {
@@ -25,34 +25,29 @@ namespace DataAccess.Concrete.EntityFramework
                              on r.CarId equals c.Id
                              join b in context.Brands
                              on c.BrandId equals b.BrandId
-                             join co in context.Colors
-                             on c.ColorId equals co.ColorId
-                             join cstmr in context.Customers
-                             on r.CustomerId equals cstmr.UserId
+                             join cs in context.Customers
+                             on r.CustomerId equals cs.Id
                              join u in context.Users
-                             on cstmr.UserId equals u.Id
-
+                             on cs.UserId equals u.Id
                              select new RentalDetailDto
                              {
-                             Id = u.Id,
-                             RentDate = r.RentDate,
-                             ReturnDate = r.ReturnDate,
-                             CarId = r.CarId,
-                             UserId = cstmr.UserId,
-                             RentalId = r.RentalId,
-                             FirstName = u.FirstName,
-                             CompanyName = cstmr.CompanyName,
-                             CustomerId = r.CustomerId,
-                             Email = u.Email,
-                             LastName = u.LastName,
-                             CarName = c.CarName
-                             
-
+                                 Id = r.RentalId,
+                                 CarId = c.Id,
+                                 Description = c.Description,
+                                 BrandName = b.BrandName,
+                                 CompanyName = cs.CompanyName,
+                                 FirstName = u.FirstName,
+                                 LastName = u.LastName,
+                                 RentDate = r.RentDate,
+                                 ReturnDate = r.ReturnDate
                              };
                 return result.ToList();
-
-
             }
+
+
         }
+
+      
     }
 }
+
