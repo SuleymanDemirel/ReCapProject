@@ -16,39 +16,51 @@ using Core.CrossCuttingConcerns.Caching;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Performance;
+using System.Linq.Expressions;
 
 namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
         ICarDal _carDal;
-        public CarManager(ICarDal carDal)
+        IRentalService _rentalService;
+        ICacheManager _cacheManager;
+        IBrandService _brandService;
+        public CarManager(ICarDal carDal,IRentalService rentalService, IBrandService brandService)
         {
             _carDal = carDal;
+            _rentalService = rentalService;
+            _brandService = brandService;
         }
-
+        
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
-        //[CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
+
+            IResult result = BusinessRules.Run(CheckIfCarNameExists(car.CarName));
+            if (result!=null)
+            {
+                return result;
+            }
+
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
-
         }
 
-        public IResult Delete(Car car)
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Car car)
         {
-            _carDal.Delete(car);
-            return new SuccessResult(Messages.CarDeleted);
-
+            throw new NotImplementedException();
         }
 
         [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<Car>> GetAll()
         {
-         
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
+            
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarsListed);
+
         }
 
         public IDataResult<List<Car>> GetAllByBrandId(int id)
@@ -56,38 +68,53 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
         }
 
-        public IDataResult<List<Car>> GetAllByColorId(int id)
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == id));
+            //if (DateTime.Now.Hour == 10)
+            //{
+            //    return new ErrorDataResult<List<CarDetailDto>>(Messages.MaintenanceTime);//sistem bakımda
+            //}
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
 
-        public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int id)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.DailyPrice >= min && c.DailyPrice <= max));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.CarId == id));
         }
 
-        [CacheAspect]
-        [PerformanceAspect(5)]
-        public IDataResult<Car> GetById(int carId)
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandId(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.GetById(c => c.Id == carId));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c=>c.BrandId == id));
         }
 
-        public IDataResult<List<CarDetailDto>> GetByIdDetail(int id)
+        public IDataResult<Car> GetCarsByCarId(int carId)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetSingleCarDetail(x => x.Id == id));
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId));
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetailDtos()
+        public IDataResult<List<CarDetailDto>> GetCarsByColorId(int id)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailDtos());
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c=>c.ColorId == id));
         }
-
 
         public IResult Update(Car car)
         {
+            if (car.DailyPrice <= 0)
+            {
+                return new ErrorResult(Messages.CarPriceInvalid);
+            }
             _carDal.Update(car);
             return new SuccessResult(Messages.CarUpdated);
+        }
+        [ValidationAspect(typeof(CarValidator))]
+        private IResult CheckIfCarNameExists(string carName)
+        {
+            var result = _carDal.GetAll(c => c.CarName == carName).Any(); // any bool döndürüyor. .Count ile de kontrol edebilirdik.
+            if (result)
+            {
+                return new ErrorResult(Messages.CarNameAlreadyExists);
+            }
+            return new SuccessResult();
         }
     }
 }

@@ -15,67 +15,55 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
+        
 
         public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
         }
-
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            var result = _rentalDal.GetAll(r => rental.CarId == rental.CarId && r.ReturnDate == null);
-            if (result.Count > 0)
-            {
-                return new ErrorResult(Messages.RentalAddedError);
-            }
             _rentalDal.Add(rental);
-            return new SuccessResult(Messages.RentalAdded);
-        }
+            return new SuccessResult(Messages.CarRentedSuccessfull);
 
-        public IResult Delete(Rental rental)
-        {
-            _rentalDal.Delete(rental);
-            return new SuccessResult(Messages.BrandDeleted);
+            //var result = _rentalDal.GetAll().FindAll(r => r.ReturnDate == r.ReturnDate);
+
+            //if (result.Count > 0 && result.SingleOrDefault(r => r.CarId == rental.CarId) == default(Rental))
+            //{
+
+            //}
+            //else
+            //{
+            //    return new ErrorResult(Messages.CarNotBeRented);
+            //}
+
+
         }
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.CustomerInformationListed);
         }
 
-        public IDataResult<Rental> GetById(int id)
+        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
-            return new SuccessDataResult<Rental>(_rentalDal.GetById(r => r.RentalId == id));
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(),Messages.CustomerInformationListed);
         }
 
-        public IDataResult<List<RentalDetailDto>> GetRentalDetailDtos()
+        public IDataResult<Rental> GetRentalByCustomerId(int id)
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailDtos());
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.CustomerId == id));
         }
 
-        /*public IDataResult<List<RentalDetailDto>> GetRentalDetailDtos(int carId)
+        public IDataResult<Rental> GetRentalById(int id)
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailDtos(r => r.CarId == carId));
-        }*/
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.RentalId == id));
+        }
 
         public IResult Update(Rental rental)
         {
-            _rentalDal.Update(rental);
-            return new SuccessResult(Messages.RentalUpdated);
-        }
-
-        public IResult UpdateReturnDate(int carId)
-        {
-            var result = _rentalDal.GetAll(r => r.CarId == carId);
-            var updatedRental = result.LastOrDefault();
-            if (updatedRental.ReturnDate != null)
-            {
-                return new ErrorResult(Messages.RentalUpdatedReturnDateError);
-            }
-            updatedRental.ReturnDate = DateTime.Now;
-            _rentalDal.Update(updatedRental);
-            return new SuccessResult(Messages.RentalUpdatedReturnDate);
+            throw new NotImplementedException();
         }
     }
 }

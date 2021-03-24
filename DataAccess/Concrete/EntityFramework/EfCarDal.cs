@@ -13,55 +13,36 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car, CarDbContext>, ICarDal
     {
-        public List<CarDetailDto> GetCarDetailDtos(Expression<Func<Car, bool>> filter = null)
+
+        public List<CarDetailDto> GetCarDetails(Expression<Func<Car,bool>> filter =null)
         {
             using (CarDbContext context = new CarDbContext())
             {
-               
-                var result = context.Cars
-                    .Include(i => i.Brand)
-                    .Include(i => i.Color)
-                    .Include(i => i.CarImages)
-                    .Select(s => new CarDetailDto
-                    {
-                        Id = s.Id,
-                        BrandName = s.Brand.BrandName,
-                        ColorName = s.Color.ColorName,
-                        Description = s.Description,
-                        DailyPrice = s.DailyPrice,
-                        ModelYear = s.ModelYear,
-                        CarName = s.CarName,
-                        ImagePath = s.CarImages.Select(sk => sk.ImagePath).ToList()
+                var result = from p in filter == null? context.Cars : context.Cars.Where(filter)
+                             join c in context.Brands
+                             on p.BrandId equals c.BrandId
+                             join z in context.Colors
+                             on p.ColorId equals z.ColorId
+                           
 
-                    }).ToList();
-                return result;
+                             select new CarDetailDto
+                             {
+                                 Id = p.Id,
+                                 CarName = p.CarName,
+                                 BrandName = c.BrandName,
+                                 DailyPrice = p.DailyPrice,
+                                 ColorName = z.ColorName,
+                                 Description = p.Description,
+                                 ModelYear = p.ModelYear
+                              
+                             };
+                return result.ToList();
             }
         }
 
-        public List<CarDetailDto> GetSingleCarDetail(Expression<Func<Car, bool>> filter = null)
-        {
-            using (CarDbContext context = new CarDbContext())
-            {
-                var result = context.Cars
-                    .Where(filter)
-                    .Include(i => i.Brand)
-                    .Include(i => i.Color)
-                    .Include(i => i.CarImages)
-                    .Select(s => new CarDetailDto
-                    {
-                        Id = s.Id,
-                        BrandName = s.Brand.BrandName,
-                        ColorName = s.Color.ColorName,
-                        Description = s.Description,
-                        DailyPrice = s.DailyPrice,
-                        ModelYear = s.ModelYear,
-                        CarName = s.CarName,
-                        ImagePath = s.CarImages.Select(sk => sk.ImagePath).ToList()
 
-                    }).ToList();
-                return result;
-            }
-        }
+
+
 
     }
 }
