@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -26,5 +27,21 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Color>(_colorDal.Get(b => b.ColorId == colorId));
         }
+        public IResult Add(Color color)
+        {
+
+            _colorDal.Add(color);
+            return new SuccessResult(Messages.ColorAdded);
+        }
+
+        public IResult Update(Color color)
+        {
+          
+            _colorDal.Update(color);
+            return new SuccessResult(Messages.ColorUpdated);
+        }
     }
+
+
+   
 }

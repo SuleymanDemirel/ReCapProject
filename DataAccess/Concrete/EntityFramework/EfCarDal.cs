@@ -23,7 +23,10 @@ namespace DataAccess.Concrete.EntityFramework
                              on p.BrandId equals c.BrandId
                              join z in context.Colors
                              on p.ColorId equals z.ColorId
-                           
+                             //join r in context.Rentals
+                             //on p.CarId equals r.CarId
+                            
+
 
                              select new CarDetailDto
                              {
@@ -33,7 +36,12 @@ namespace DataAccess.Concrete.EntityFramework
                                  DailyPrice = p.DailyPrice,
                                  ColorName = z.ColorName,
                                  Description = p.Description,
-                                 ModelYear = p.ModelYear
+                                 ModelYear = p.ModelYear,
+                                 //RentDate = r.RentDate,
+                                 //ReturnDate = r.ReturnDate,
+                                 //FirstName = r.FirstName
+                                 //Status = r.Status
+                                
                               
                              };
                 return result.ToList();

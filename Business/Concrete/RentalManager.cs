@@ -46,10 +46,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.CustomerInformationListed);
         }
 
-        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
-        {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(),Messages.CustomerInformationListed);
-        }
+        //public IDataResult<List<RentalDetailDto>> GetRentalDetails()
+        //{
+        //    return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(),Messages.CustomerInformationListed);
+        //}
 
         public IDataResult<Rental> GetRentalByCustomerId(int id)
         {
@@ -64,6 +64,11 @@ namespace Business.Concrete
         public IResult Update(Rental rental)
         {
             throw new NotImplementedException();
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsDto(int id)
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailsDto(r => r.CarId == id));
         }
     }
 }

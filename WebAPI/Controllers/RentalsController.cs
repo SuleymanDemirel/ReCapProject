@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,10 +14,11 @@ namespace WebAPI.Controllers
     public class RentalsController : ControllerBase
     {
         IRentalService _rentalService; // multi constructur izin verilmiyor..
-
-        public RentalsController(IRentalService rentalService)
+        private IPaymentService _paymentService;
+        public RentalsController(IRentalService rentalService, IPaymentService paymentService)
         {
             _rentalService = rentalService;
+            _paymentService = paymentService; 
         }
 
         [HttpGet("getallrental")]
@@ -31,15 +33,56 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getrentaldetails")]
-        public IActionResult GetRentalDetails()
+        //[HttpGet("getrentaldetails")]
+        //public IActionResult GetRentalDetails()
+        //{
+        //    var result = _rentalService.GetRentalDetails();
+        //    if (result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
+
+        [HttpGet("getrentalbyid")]
+        public IActionResult GetRentalById(int id)
         {
-            var result = _rentalService.GetRentalDetails();
+            var result = _rentalService.GetRentalById(id);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getrentaldetailsbyid")]
+        public IActionResult GetRentalDetailsDto(int id)
+        {
+            var result = _rentalService.GetRentalDetailsDto(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("paymentadd")]
+        public ActionResult PaymentAdd(PaymentDetailDto paymentDetailDto)
+        {
+            var paymentResult = _paymentService.CreditPayment(paymentDetailDto.Payment);
+            if (!paymentResult.Success)
+            {
+                return BadRequest(paymentResult);
+            }
+            var result = _rentalService.Add(paymentDetailDto.Rental);
+
+            if (result.Success)
+                return Ok(result);
+            else
+            {
+                throw new System.Exception(result.Message);
+            }
+        }
+
     }
 }
