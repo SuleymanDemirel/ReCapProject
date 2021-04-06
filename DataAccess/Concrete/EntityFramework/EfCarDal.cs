@@ -23,6 +23,8 @@ namespace DataAccess.Concrete.EntityFramework
                              on p.BrandId equals c.BrandId
                              join z in context.Colors
                              on p.ColorId equals z.ColorId
+                             join cc in context.CarImages
+                             on p.Id equals cc.Id
                              //join r in context.Rentals
                              //on p.CarId equals r.CarId
                             
@@ -41,6 +43,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  //ReturnDate = r.ReturnDate,
                                  //FirstName = r.FirstName
                                  //Status = r.Status
+                                 //CarId = cc.CarId,
+                                 ImagePath = cc.ImagePath
                                 
                               
                              };

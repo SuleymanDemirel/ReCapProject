@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
@@ -20,9 +20,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        public IActionResult GetAll()
+        public IActionResult GetAllCustomerDetails()
         {
-            var result = _customerService.GetAll();
+            //Thread.Sleep(5000);
+            var result = _customerService.GetAllCustomerDetails();
             if (result.Success)
             {
                 return Ok(result);
@@ -30,43 +31,21 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        [HttpGet("getcustomerdetailsbyid")]
+        public IActionResult GetCustomerDetails(int customerId)
         {
-            var result = _customerService.GetById(id);
+            var result = _customerService.GetCustomerDetailsDto(customerId);
             if (result.Success)
             {
-                return Ok(result);
+                return Ok(result.Data);
             }
             return BadRequest(result);
         }
 
-        [HttpPost("add")]
-        public IActionResult Add(Customer customer)
+        [HttpGet("getcustomerbyid")]
+        public IActionResult GetCustomerById(int id)
         {
-            var result = _customerService.Add(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("delete")]
-        public IActionResult Delete(Customer customer)
-        {
-            var result = _customerService.Delete(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("update")]
-        public IActionResult Update(Customer customer)
-        {
-            var result = _customerService.Update(customer);
+            var result = _customerService.GetCustomerById(id);
             if (result.Success)
             {
                 return Ok(result);

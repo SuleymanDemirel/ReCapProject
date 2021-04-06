@@ -1,17 +1,22 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.DTOs;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Business.Abstract
 {
-    public interface ICustomerService
+   public interface ICustomerService
     {
+        IDataResult<List<CustomerDetailsDto>> GetAllCustomerDetails();
+      
+        IDataResult<Customer> GetCustomerById(int id);
+        //IDataResult<List<RentalDetailDto>> GetRentalDetails();
         IResult Add(Customer customer);
-        IResult Delete(Customer customer);
         IResult Update(Customer customer);
-        IDataResult<List<Customer>> GetAll();
-        IDataResult<Customer> Get(int id);
-        IDataResult<Customer> GetByUserId(int userId);
-        IDataResult<Customer> GetById(int id);
+
+        IDataResult<List<CustomerDetailsDto>> GetCustomerDetailsDto(int customerId);
+
     }
 }
