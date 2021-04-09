@@ -17,8 +17,8 @@ namespace Entities.Concrete
 
         public DateTime ReturnDate { get; set; }
 
-        public string FirstName { get; set; }
-        public string Status { get; set; }
+     
+        //public string Status { get; set; }
 
 
     }

@@ -44,7 +44,9 @@ namespace DataAccess.Concrete.EntityFramework
                                  //FirstName = r.FirstName
                                  //Status = r.Status
                                  //CarId = cc.CarId,
+                                 FindeksPoint = p.FindeksPoint,
                                  ImagePath = cc.ImagePath
+                                 
                                 
                               
                              };

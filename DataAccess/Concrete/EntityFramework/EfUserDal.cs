@@ -30,7 +30,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  Email = u.Email,
                                  CompanyName = c.CompanyName,
                                  FirstName = u.FirstName,
-                                 LastName = u.LastName
+                                 LastName = u.LastName,
+                                 FindeksPoint = c.FindeksPoint
 
 
                              };
@@ -70,7 +71,8 @@ namespace DataAccess.Concrete.EntityFramework
                                 Email = u.Email,
                                 CompanyName = c.CompanyName,
                                 FirstName = u.FirstName,
-                                LastName = u.LastName
+                                 LastName = u.LastName,
+                                 FindeksPoint = c.FindeksPoint
 
 
                              };

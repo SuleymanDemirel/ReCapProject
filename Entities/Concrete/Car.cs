@@ -15,6 +15,7 @@ namespace Entities.Concrete
         public decimal DailyPrice { get; set; }
         public string CarName { get; set; }
         public string Description { get; set; }
+        public int FindeksPoint { get; set; }
         //public string BrandName { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entities.Concrete;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,18 @@ namespace WebAPI.Controllers
             _paymentService = paymentService; 
         }
 
+        [HttpPost("add")]
+        public IActionResult Add(Rental rental)
+        {
+            var result = _rentalService.Add(rental);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpGet("getallrental")]
 
         public IActionResult GetAllRental()
@@ -33,16 +46,16 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        //[HttpGet("getrentaldetails")]
-        //public IActionResult GetRentalDetails()
-        //{
-        //    var result = _rentalService.GetRentalDetails();
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
+        [HttpGet("getallrentaldetails")]
+        public IActionResult GetRentalDetails()
+        {
+            var result = _rentalService.GetRentalDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
         [HttpGet("getrentalbyid")]
         public IActionResult GetRentalById(int id)

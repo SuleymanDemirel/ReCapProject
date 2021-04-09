@@ -12,5 +12,6 @@ namespace Entities.Concrete
         public int CustomerId { get; set; }
         public string CompanyName { get; set; }
         public int Id { get; set; }
+        public int FindeksPoint { get; set; }
     }
 }

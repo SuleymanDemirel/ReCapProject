@@ -25,7 +25,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  UserId = c.UserId,
                                  CompanyName = c.CompanyName,
                                  CustomerName = u.FirstName + " " + u.LastName,
-                                 Email = u.Email
+                                 Email = u.Email,
+                                 FindeksPoint = c.FindeksPoint
 
 
 
@@ -50,9 +51,11 @@ namespace DataAccess.Concrete.EntityFramework
                                  CustomerId = c.CustomerId,
                                  UserId = c.UserId,
                                  CompanyName = c.CompanyName,
-                                 CustomerName = u.FirstName+" "+u.LastName,
-                                 Email =u.Email
-                              
+                                 CustomerName = u.FirstName + " " + u.LastName,
+                                 Email = u.Email,
+                                 FindeksPoint = c.FindeksPoint
+
+
 
 
                              };

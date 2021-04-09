@@ -14,5 +14,6 @@ namespace Entities.DTOs
         public int CustomerId { get; set; }
         public string CompanyName { get; set; }
         //public int FindeksScore { get; set; }
+        public int FindeksPoint { get; set; }
     }
 }
