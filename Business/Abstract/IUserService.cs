@@ -9,6 +9,8 @@ namespace Business.Abstract
     {
         List<OperationClaim> GetClaims(User user);
         void Add(User user);
+        
+        IResult Update(User user);
         User GetByMail(string email);
         //IDataResult<User> GetByMail(string email);
 

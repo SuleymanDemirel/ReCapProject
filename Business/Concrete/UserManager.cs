@@ -2,6 +2,7 @@
 using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Hashing;
 using DataAccess.Abstract;
 using Entities.DTOs;
 using System;
@@ -47,5 +48,12 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<UserDetailDto>>(_userDal.GetAllUserDetails());
         }
+
+        public IResult Update(User user)
+        {
+            _userDal.Update(user);
+            return new SuccessResult(Messages.UserUpdated);
+        }
+      
     }
 }

@@ -11,7 +11,7 @@ namespace Business.ValidationRules.FluentValidation
         {
             RuleFor(r => r.RentalId).NotEmpty();
             RuleFor(r => r.RentDate).NotEmpty();
-
+         
         }
 
 

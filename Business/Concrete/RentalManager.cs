@@ -15,15 +15,20 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
+       
         
 
         public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
+           
         }
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
+          
+
+
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.CarRentedSuccessfull);
 
