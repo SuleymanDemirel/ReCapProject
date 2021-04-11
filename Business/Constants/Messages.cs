@@ -49,5 +49,7 @@ namespace Business.Constants
 
 
         public static string UserUpdated = "Kullanıcı Güncellendi";
+
+        public static string CartAdded = "Kredi Kartı eklendi.";
     }
 }

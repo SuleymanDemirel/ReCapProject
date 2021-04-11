@@ -15,5 +15,14 @@ namespace Entities.DTOs
         public string CompanyName { get; set; }
         //public int FindeksScore { get; set; }
         public int FindeksPoint { get; set; }
+
+        public int CreditCartId { get; set; }
+        public string FirstNameAndLastName { get; set; }
+
+        public int Cvv { get; set; }
+
+        public string Date { get; set; }
+
+        public string CartNumber { get; set; }
     }
 }

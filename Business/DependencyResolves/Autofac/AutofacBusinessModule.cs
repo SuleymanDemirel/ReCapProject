@@ -45,6 +45,8 @@ namespace Business.DependencyResolves.Autofac
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 
+            builder.RegisterType<CreditCartManager>().As<ICreditCartService>();
+            builder.RegisterType<EfCreditCartDal>().As<ICreditCartDal>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

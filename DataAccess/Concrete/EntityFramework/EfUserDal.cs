@@ -19,7 +19,7 @@ namespace DataAccess.Concrete.EntityFramework
                 var result = from u in  context.Users
                              join c in context.Customers
                              on u.Id equals c.CustomerId
-
+                           
 
 
 
@@ -32,6 +32,10 @@ namespace DataAccess.Concrete.EntityFramework
                                  FirstName = u.FirstName,
                                  LastName = u.LastName,
                                  FindeksPoint = c.FindeksPoint
+                                 
+                              
+                                 
+                                 
 
 
                              };
